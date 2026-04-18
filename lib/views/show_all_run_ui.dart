@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_run_tracker_app/models/run.dart';
+import 'package:flutter_run_tracker_app/services/supabase_service.dart';
 import 'package:flutter_run_tracker_app/views/add_run_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ShowAllRunUi extends StatefulWidget {
   const ShowAllRunUi({super.key});
@@ -10,6 +13,28 @@ class ShowAllRunUi extends StatefulWidget {
 }
 
 class _ShowAllRunUiState extends State<ShowAllRunUi> {
+  //สร้างตัวเเปรเก็บข้อมูล ที่นำไปแสดงใน ListView
+  List<Run> runs = [];
+
+  //สร้าง instance ของ SupabaseService
+  final service = SupabaseService();
+
+  //สร้างเมธอดสําหรับดึงข้อมูลทั้งหมดจาก supabase ผ่านทาง SupabaseService
+  void loadAllRun() async {
+    //สร้าตัวเเปรเก็บข้อมู,ที่ดึงได้จากการดีงผ่าน supabaseservice
+    final data = await service.getAllRun();
+    setState(() {
+      //เก็บข้อมูลที่ได้จากการดึงผ่านทาง supabase ไว้ในตัวเเปร foods เพื่อเอาไปใช้ body
+      runs = data;
+    });
+  }
+
+  @override
+  void initState() {
+    loadAllRun();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +59,50 @@ class _ShowAllRunUiState extends State<ShowAllRunUi> {
             ),
             //ส่วนเเสดง LOGO
             Image.asset(
-              'assets/images/logo.png',
+              '/images/running.png',
               width: 200,
               height: 180,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
             SizedBox(
               height: 20,
             ),
+            //ส่วนเเสดงข้อมูลที่ดึงมาจาก Supabase
+            Expanded(
+                child: ListView.builder(
+              itemCount: runs.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, bottom: 5.0, top: 5.0),
+                  child: ListTile(
+                    onTap: () {},
+                    leading: Image.asset(
+                      '/images/logo.png',
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    trailing: Icon(
+                      Icons.info,
+                      color: Colors.red,
+                    ),
+                    title: Text(
+                      'วิ่งที่ไหน ${runs[index].runWhere}',
+                    ),
+                    subtitle: Text(
+                      'ระยะทาง ${runs[index].runDistance} กม., วิ่งกับใคร= ${runs[index].runWho}',
+                    ),
+                    tileColor:
+                        index % 2 == 0 ? Colors.blue[100] : Colors.grey[300],
+                    textColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              },
+            ))
           ],
         ),
       ),
@@ -53,7 +114,7 @@ class _ShowAllRunUiState extends State<ShowAllRunUi> {
               builder: (context) => AddRunUi(),
             ),
           ).then((value) {
-            ();
+            loadAllRun();
           });
         },
         child: Icon(

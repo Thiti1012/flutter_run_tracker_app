@@ -3,18 +3,16 @@
 // ignore_for_file: non_constant_identifier_names
 class Run {
   String? id; // รหัสของการวิ่ง (อาจจะเป็น UUID หรือรหัสเฉพาะ)
-  DateTime? created_at; // วันที่และเวลาที่บันทึกการวิ่ง
-  String? runWhere; // สถานที่วิ่ง
-  String? runWho; // ผู้วิ่งกับเรา
-  double? runDistance; // ระยะทางที่วิ่ง
+  String runWhere; // สถานที่วิ่ง
+  String runWho; // ผู้วิ่งกับเรา
+  double runDistance; // ระยะทางที่วิ่ง
 
   // กำหนดคอนสตรัคเตอร์สำหรับสร้างอ็อบเจ็กต์ Run
   Run({
     this.id,
-    this.created_at,
-    this.runWhere,
-    this.runWho,
-    this.runDistance,
+    required this.runWhere,
+    required this.runWho,
+    required this.runDistance,
   });
 
   //แปลงข้อมูลที่รับมาจาก Supabase เพื่อมาใช้ในแอปฯ
