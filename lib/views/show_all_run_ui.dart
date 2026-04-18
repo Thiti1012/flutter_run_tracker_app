@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_run_tracker_app/models/run.dart';
 import 'package:flutter_run_tracker_app/services/supabase_service.dart';
 import 'package:flutter_run_tracker_app/views/add_run_ui.dart';
+import 'package:flutter_run_tracker_app/views/update_delete_run_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -76,7 +77,20 @@ class _ShowAllRunUiState extends State<ShowAllRunUi> {
                   padding: const EdgeInsets.only(
                       left: 15.0, right: 15.0, bottom: 5.0, top: 5.0),
                   child: ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      //เมื่อกดที่ ListTile ให้ไปหน้า UpdateDeleteRunUi พร้อมส่งข้อมูลของ run ที่กดไปด้วย
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateDeleteRunUi(
+                            run: runs[index],
+                          ),
+                        ),
+                      ).then((value) {
+                        //เมื่อกลับมาที่หน้านี้ให้โหลดข้อมูลใหม่อีกครั้ง เพื่อให้เห็นการเปลี่ยนแปลงที่เกิดขึ้น
+                        loadAllRun();
+                      });
+                    },
                     leading: Image.asset(
                       '/images/logo.png',
                       width: 50,

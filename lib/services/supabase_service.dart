@@ -21,4 +21,14 @@ class SupabaseService {
   Future insertRun(Run run) async {
     await supabase.from('run_tb').insert(run.toJson());
   }
+
+  //สร้างเมธอดแก้ไขข้อมูลใน run_tb ใน Supabase
+  Future updateRun(String id, Run run) async {
+    await supabase.from('run_tb').update(run.toJson()).eq('id', id);
+  }
+
+  //สร้างเมธอดลบข้อมูลใน run_tb ใน Supabase
+  Future deleteRun(String id) async {
+    await supabase.from('run_tb').delete().eq('id', id);
+  }
 }

@@ -59,7 +59,7 @@ class _AddRunUiState extends State<AddRunUi> {
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(
-          'Run Tracker',
+          'Run Tracker (เพิ่ม)',
           style: GoogleFonts.outfit(
             fontSize: 30,
             fontWeight: FontWeight.bold,
